@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<body style="margin: 0; background-color: rgb(80, 80, 80);">
+    <div style="position: fixed; width: 100%; height: 100vh;">
+        <spline-viewer loading-anim-type="spinner-small-dark" url="https://prod.spline.design/Es6i2ITPfKTEyYsE/scene.splinecode"></spline-viewer>
+    </div>
+    <div class="chatbox" style="position: relative; background-color: white; height: 600px; width: 400px; border-radius: 24px; margin: 24px; float: right;">
+        <h3 style="text-align: center;">BayMini</h3>
+        <div id="chat-box-holder" style="display: flex; flex-direction: column; padding: 5px; padding-left: 10px; padding-right: 10px;">
+            <div id="box-for-chat" class="box-for-chat" style="height: 430px;"></div>
+            <input id="prompt-box" class="prompt-box" title="prompt" type="text" placeholder="Enter your prompt here..." onkeydown="if(event.key === 'Enter') sendMessage();">
+        </div>
+        
+    </div>
+    <div class="page" style="position: relative; background-color: white; height: 1030px; width: 1425px; border-radius: 24px; margin: 24px; margin-right: 0px; float: left; padding-top: 0px;">
+        <div class="navbar">
+            <a href="#home"><img src="assets/MedMax.png" title="MedMax, Intelligent Pharmacy" alt="MedMax Logo" style="height: 40px; margin: 24px;"></a>
+            <ul>
+                <!-- <li style="font-size: 25px;"><a class="shop" style="text-decoration: none; color: black;" href="#shop"> </a></li> -->
+                <div class="searchbar-div" style="position: relative; margin-right: 50px;">
+                    <li>
+                        <input class="searchbar" title="search" type="text" placeholder="Search...">
+                        <a href="#search"><img src="assets/magnifying-glass.svg" style="height: 20px; position: absolute; padding: 10px; margin-top: 4px;" alt="search"></a>
+                    </li>
+                </div>
+               
+                <li>
+                    <a href="#cart">
+                        <!-- <span class="material-symbols-outlined" style="color: black;">
+                            shopping_cart
+                        </span> -->
+                        <img src="assets/cart-shopping.svg" style="height: 20px;" alt="">
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="homepage">
+            <div class="welcome">
+                <h1 id="welh1">Welcome to the future of Online Pharmacy</h1>
+                <h1 style="text-align: center; margin-top: 80px;">Shop Now!</h1>
+                <a href="#exp"><h3 style="text-align: center; margin-top: 250px;">Scroll Down</h3></a>
+            </div>
+        </div>
+        
+        <div class="explore" id="exp">
+
+        </div>
+
+    </div>
+    <script>
+        async function sendMessage() {
+            const inputBox = document.getElementById('prompt-box');
+            const message = inputBox.value.trim();
+            if (message) {
+                displayMessage(message, 'user');
+                inputBox.value = '';
+
+                try {
+                    const response = await fetch('http://127.0.0.1:5000/chat', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ question: message })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error(`Error: ${response.statusText}`);
+                    }
+
+                    const data = await response.json();
+                    displayMessage(data.response, 'bot');
+                } catch (error) {
+                    console.error('Error:', error);
+                    displayMessage('Error fetching response from server.', 'bot');
+                }
+            }
+        }
+
+        function displayMessage(message, sender) {
+            const chatBox = document.getElementById('box-for-chat');
+            const messageBubble = document.createElement('div');
+            messageBubble.classList.add('chat-bubble', sender);
+            messageBubble.innerText = message;
+            chatBox.appendChild(messageBubble);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+    <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.63/build/spline-viewer.js"></script>
+</body>
+</html>
