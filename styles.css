@@ -92,9 +92,7 @@ html{
 }
 
 .explore{
-    background-color: blue;
-    width: 100%;
-    height: 500px;
+    margin-bottom: 50px;
 }
 
 @keyframes fadeIn {
@@ -163,4 +161,136 @@ html{
     color: black;
     align-self: flex-start;
     border-bottom-left-radius: 0;
+}
+
+.showcase {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 16px;
+    display: inline-block;
+    width: 200px;
+    text-align: center;
+}
+
+.showcase-banner {
+    position: relative;
+}
+
+.product-img {
+    width: 100%;
+    height: auto;
+}
+
+.showcase-content {
+    margin-top: 16px;
+}
+
+.showcase-category {
+    color: #888;
+    font-size: 14px;
+}
+
+.showcase-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 8px 0;
+}
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price {
+    font-size: 18px;
+    color: green;
+    margin-bottom: 8px;
+}
+
+.btn-add-to-cart {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #218838;
+}
+
+/* styles.css */
+
+#medicine-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    text-align: center;
+}
+
+.product-main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.product-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+}
+
+.showcase {
+    border: 1px solid #ccc;
+    padding: 16px;
+    margin: 16px;
+    width: 200px;
+    text-align: center;
+}
+
+.showcase-banner {
+    position: relative;
+}
+
+.product-img {
+    width: 100%;
+    height: auto;
+}
+
+.showcase-content {
+    margin-top: 16px;
+}
+
+.showcase-category {
+    color: #888;
+    font-size: 14px;
+}
+
+.price-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.price {
+    font-size: 18px;
+    color: green;
+    margin-bottom: 8px;
+}
+
+.btn-add-to-cart {
+    background-color: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.btn-add-to-cart:hover {
+    background-color: #218838;
 }

@@ -1,0 +1,82 @@
+[
+    {
+        "name": "Paracetamol",
+        "image": "./assets/medicines/paracetamol.jpg",
+        "category": "Fever and Pain Relief",
+        "price": "$10.00",
+        "discount": "$7.00",
+        "rating": 4.5
+    },
+    {
+        "name": "Ibuprofen",
+        "image": "./assets/medicines/ibuprofen.jpg",
+        "category": "Pain Relief",
+        "price": "$8.00",
+        "discount": "$6.00",
+        "rating": 4.2
+    },
+    {
+        "name": "Acetomenophen",
+        "image": "./assets/medicines/Acetaminophen.jpg",
+        "category": "Fever and Pain Relief",
+        "price": "$12.00",
+        "discount": "$9.00",
+        "rating": 4.8
+    },
+    {
+        "name": "Amoxicillin",
+        "image": "./assets/medicines/Amoxicillin.jpg",
+        "category": "Antibiotics",
+        "price": "$15.00",
+        "discount": "$12.00",
+        "rating": 4.6
+    },
+    {
+        "name": "Antacid",
+        "image": "./assets/medicines/Antacid.jpg",
+        "category": "Digestive Health",
+        "price": "$6.50",
+        "discount": "$4.50",
+        "rating": 4.0
+    },
+    {
+        "name": "Aspirin",
+        "image": "./assets/medicines/Aspirin.jpg",
+        "category": "Pain Relief",
+        "price": "$7.50",
+        "discount": "$5.50",
+        "rating": 4.3
+    },
+    {
+        "name": "Azithromycin",
+        "image": "./assets/medicines/Azithromycin.jpg",
+        "category": "Antibiotics",
+        "price": "$18.00",
+        "discount": "$15.00",
+        "rating": 4.7
+    },
+    {
+        "name": "Citirizine",
+        "image": "./assets/medicines/Cetirizine.jpg",
+        "category": "Allergy Relief",
+        "price": "$9.00",
+        "discount": "$6.50",
+        "rating": 4.1
+    },
+    {
+        "name": "Ciprofloxacin",
+        "image": "./assets/medicines/Ciprofloxacin.jpg",
+        "category": "Antibiotics",
+        "price": "$14.00",
+        "discount": "$10.00",
+        "rating": 4.4
+    },
+    {
+        "name": "Metformin",
+        "image": "./assets/medicines/Metformin.jpg",
+        "category": "Diabetes Management",
+        "price": "$11.00",
+        "discount": "$8.50",
+        "rating": 4.9
+    }
+]

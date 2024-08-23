@@ -39,6 +39,8 @@ def get_gemini_response(question):
   )
   chat
   response = chat.send_message(question, safety_settings=safety_settings)
+  # for chunk in response:
+  #     return chunk.text
   return response.text
 
 @app.route('/chat', methods=['POST'])

@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>MedMax - powered by🤖</title>
+    <link rel="icon" type="image/x-icon" href="assets/favicon.png">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -13,7 +14,10 @@
 </head>
 <body style="margin: 0; background-color: rgb(80, 80, 80); overflow: hidden; font-family: 'Poppins', sans-serif, normal;">
     <div style="position: fixed; width: 100%; height: 100vh;">
+        <!-- baymax 3d model -->
+
         <!-- <spline-viewer url="https://prod.spline.design/Es6i2ITPfKTEyYsE/scene.splinecode"></spline-viewer> -->
+        
     </div>
     <div class="chatbox" style="position: relative; background-color: white; height: 600px; width: 400px; border-radius: 24px; margin: 24px; float: right;">
         <h3 style="text-align: center;">BayMini</h3>
@@ -54,57 +58,20 @@
             </div>
         </div>
         
-        <div class="explore" id="exp">
-
+        <div class="explore" id="exp" style="margin-top: 100px;">
+            <div id="medicine-list" style="display: none;">
+                <h2 style="text-align: center;">Available Medicines</h3>
+                <div class="product-main">
+                    <!-- <h2 class="title">Medicines</h2> -->
+                    <div class="product-grid" id="medicine-grid">
+                        <!-- Medicines will be populated here -->
+                    </div>
+                </div>
+            </div>
         </div>
 
     </div>
-    <script>
-        async function sendMessage() {
-            const inputBox = document.getElementById('prompt-box');
-            const message = inputBox.value.trim();
-            if (message) {
-                displayMessage(message, 'user');
-                inputBox.value = '';
-
-                try {
-                    const response = await fetch('http://127.0.0.1:5000/chat', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify({ question: message })
-                    });
-
-                    if (!response.ok) {
-                        throw new Error(`Error: ${response.statusText}`);
-                    }
-
-                    const data = await response.json();
-                    displayMessage(data.response, 'bot');
-                } catch (error) {
-                    console.error('Error:', error);
-                    displayMessage('Error fetching response from server.', 'bot');
-                }
-            }
-        }
-
-        function displayMessage(message, sender) {
-            const chatBox = document.getElementById('box-for-chat');
-            const messageBubble = document.createElement('div');
-            messageBubble.classList.add('chat-bubble', sender);
-            
-            if (sender === 'bot') {
-                const markdownHtml = marked.parse(message);
-                messageBubble.innerHTML = markdownHtml;
-            } else {
-                messageBubble.innerText = message;
-            }
-
-            chatBox.appendChild(messageBubble);
-            chatBox.scrollTop = chatBox.scrollHeight;
-        }
-    </script>
+    <script src="script.js"></script>
     <script type="module" src="https://unpkg.com/@splinetool/viewer@1.0.63/build/spline-viewer.js"></script>
 </body>
 </html>
