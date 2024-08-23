@@ -1,3 +1,8 @@
+// API to fetch response from LLM
+document.addEventListener('DOMContentLoaded', () => {
+    loadChatHistory();
+});
+
 async function sendMessage() {
     const inputBox = document.getElementById('prompt-box');
     const message = inputBox.value.trim();
@@ -19,7 +24,23 @@ async function sendMessage() {
             }
 
             const data = await response.json();
+            console.log('Server response:', data); // Debugging log
             displayMessage(data.response, 'bot');
+
+            // Extract medicine names from the response
+            const medicineNames = extractMedicineNames(data.response);
+            console.log('Extracted medicine names:', medicineNames); // Debugging log
+
+            // Fetch medicines.json and check for the extracted medicine names
+            const medicines = await fetchMedicines();
+            console.log('Fetched medicines:', medicines); // Debugging log
+
+            medicineNames.forEach(name => {
+                const medicine = medicines.find(med => med.name.toLowerCase() === name.toLowerCase());
+                if (medicine) {
+                    displayMedicine(medicine);
+                }
+            });
         } catch (error) {
             console.error('Error:', error);
             displayMessage('Error fetching response from server.', 'bot');
@@ -41,6 +62,103 @@ function displayMessage(message, sender) {
 
     chatBox.appendChild(messageBubble);
     chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Save message to localStorage
+    saveMessageToLocalStorage(message, sender);
+}
+
+function displayMedicine(medicine) {
+    const chatBox = document.getElementById('box-for-chat');
+
+    // Create medicine element
+    const medicineElement = document.createElement('div');
+    medicineElement.style.display = 'flex';
+    medicineElement.style.alignItems = 'center';
+    medicineElement.style.marginBottom = '10px';
+
+    const medicineImage = document.createElement('img');
+    medicineImage.src = medicine.image;
+    medicineImage.alt = medicine.name;
+    medicineImage.style.width = '50px';
+    medicineImage.style.height = '50px';
+    medicineImage.style.marginRight = '10px';
+
+    const medicineInfo = document.createElement('div');
+    const medicineName = document.createElement('div');
+    medicineName.textContent = medicine.name;
+    const medicineQuantity = document.createElement('input');
+    medicineQuantity.type = 'number';
+    medicineQuantity.value = 1;
+    medicineQuantity.min = 1;
+    medicineQuantity.style.marginRight = '10px';
+
+    const addToCartButton = document.createElement('button');
+    addToCartButton.textContent = 'Add to Cart';
+    addToCartButton.addEventListener('click', () => {
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const existingItem = cartItems.find(item => item.name === medicine.name);
+
+        if (existingItem) {
+            existingItem.quantity += parseInt(medicineQuantity.value);
+        } else {
+            medicine.quantity = parseInt(medicineQuantity.value);
+            cartItems.push(medicine);
+        }
+
+        localStorage.setItem('cartItems', JSON.stringify(cartItems));
+        alert('Item added to cart!');
+    });
+
+    medicineInfo.appendChild(medicineName);
+    medicineInfo.appendChild(medicineQuantity);
+    medicineInfo.appendChild(addToCartButton);
+
+    medicineElement.appendChild(medicineImage);
+    medicineElement.appendChild(medicineInfo);
+
+    chatBox.appendChild(medicineElement);
+    chatBox.scrollTop = chatBox.scrollHeight;
+
+    // Save medicine to localStorage
+    saveMedicineToLocalStorage(medicine);
+}
+
+function saveMessageToLocalStorage(message, sender) {
+    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    chatHistory.push({ message, sender });
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+}
+
+function saveMedicineToLocalStorage(medicine) {
+    let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    chatHistory.push({ medicine });
+    localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+}
+
+function loadChatHistory() {
+    const chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+    chatHistory.forEach(entry => {
+        if (entry.message) {
+            displayMessage(entry.message, entry.sender);
+        }
+        if (entry.medicine) {
+            displayMedicine(entry.medicine);
+        }
+    });
+}
+
+function extractMedicineNames(response) {
+    // Simple regex to extract medicine names (assuming they are capitalized)
+    const medicineRegex = /\b[A-Z][a-z]*\b/g;
+    return response.match(medicineRegex) || [];
+}
+
+async function fetchMedicines() {
+    const response = await fetch('medicines.json');
+    if (!response.ok) {
+        throw new Error(`Error fetching medicines: ${response.statusText}`);
+    }
+    return await response.json();
 }
 
 // Medicine List generation
