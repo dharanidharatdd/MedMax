@@ -294,3 +294,40 @@ html{
 .btn-add-to-cart:hover {
     background-color: #218838;
 }
+
+/* styles for cart page */
+.container {
+    padding: 20px;
+}
+
+.row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    background-color: #f9f9f9;
+}
+
+.col-2, .col-3, .col-4 {
+    flex: 1;
+}
+
+.col-2 img {
+    max-width: 100%;
+    border-radius: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+}

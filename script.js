@@ -45,74 +45,86 @@ function displayMessage(message, sender) {
 
 // Medicine List generation
 
+// Example of adding an item to the cart and storing it in localStorage
 document.addEventListener('DOMContentLoaded', () => {
-console.log('DOM fully loaded and parsed');
+    fetch('medicines.json')
+        .then(response => response.json())
+        .then(medicines => {
+            const medicineGrid = document.getElementById('medicine-grid');
+            medicines.forEach(medicine => {
+                const showcase = document.createElement('div');
+                showcase.className = 'showcase';
 
-fetch('medicines.json')
-    .then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        return response.json();
-    })
-    .then(medicines => {
-        console.log('Medicines fetched:', medicines);
-        const medicineGrid = document.getElementById('medicine-grid');
-        medicines.forEach(medicine => {
-            const showcase = document.createElement('div');
-            showcase.className = 'showcase';
+                const showcaseBanner = document.createElement('div');
+                showcaseBanner.className = 'showcase-banner';
 
-            const showcaseBanner = document.createElement('div');
-            showcaseBanner.className = 'showcase-banner';
+                const imgDefault = document.createElement('img');
+                imgDefault.src = medicine.image;
+                imgDefault.alt = medicine.name;
+                imgDefault.className = 'product-img default';
 
-            const imgDefault = document.createElement('img');
-            imgDefault.src = medicine.image;
-            imgDefault.alt = medicine.name;
-            imgDefault.className = 'product-img default';
-            console.log('Image default src:', imgDefault.src);
+                showcaseBanner.appendChild(imgDefault);
 
-            showcaseBanner.appendChild(imgDefault);
+                const showcaseContent = document.createElement('div');
+                showcaseContent.className = 'showcase-content';
 
-            const showcaseContent = document.createElement('div');
-            showcaseContent.className = 'showcase-content';
+                const showcaseCategory = document.createElement('a');
+                showcaseCategory.href = '#';
+                showcaseCategory.className = 'showcase-category';
+                showcaseCategory.textContent = medicine.category;
 
-            const showcaseCategory = document.createElement('a');
-            showcaseCategory.href = '#';
-            showcaseCategory.className = 'showcase-category';
-            showcaseCategory.textContent = medicine.category;
+                const showcaseTitle = document.createElement('a');
+                showcaseTitle.href = '#';
+                const showcaseTitleH3 = document.createElement('h3');
+                showcaseTitleH3.className = 'showcase-title';
+                showcaseTitleH3.textContent = medicine.name;
+                showcaseTitle.appendChild(showcaseTitleH3);
 
-            const showcaseTitle = document.createElement('a');
-            showcaseTitle.href = '#';
-            const showcaseTitleH3 = document.createElement('h3');
-            showcaseTitleH3.className = 'showcase-title';
-            showcaseTitleH3.textContent = medicine.name;
-            showcaseTitle.appendChild(showcaseTitleH3);
+                const priceBox = document.createElement('div');
+                priceBox.className = 'price-box';
+                const price = document.createElement('p');
+                price.className = 'price';
+                price.textContent = medicine.price;
 
-            const priceBox = document.createElement('div');
-            priceBox.className = 'price-box';
-            const price = document.createElement('p');
-            price.className = 'price';
-            price.textContent = medicine.price;
+                const addToCartButton = document.createElement('button');
+                addToCartButton.className = 'btn-add-to-cart';
+                addToCartButton.textContent = 'Add to Cart';
 
-            const addToCartButton = document.createElement('button');
-            addToCartButton.className = 'btn-add-to-cart';
-            addToCartButton.textContent = 'Add to Cart';
+                // Add event listener to the "Add to Cart" button
+                addToCartButton.addEventListener('click', () => {
+                    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+                    const existingItem = cartItems.find(item => item.name === medicine.name);
 
-            priceBox.appendChild(price);
-            priceBox.appendChild(addToCartButton);
+                    if (existingItem) {
+                        existingItem.quantity += 1;
+                    } else {
+                        medicine.quantity = 1;
+                        cartItems.push(medicine);
+                    }
 
-            showcaseContent.appendChild(showcaseCategory);
-            showcaseContent.appendChild(showcaseTitle);
-            showcaseContent.appendChild(priceBox);
+                    localStorage.setItem('cartItems', JSON.stringify(cartItems));
 
-            showcase.appendChild(showcaseBanner);
-            showcase.appendChild(showcaseContent);
+                    // Show a confirm dialog with "View Cart" option
+                    if (confirm('Item added to cart! Do you want to view your cart?')) {
+                        window.location.href = 'cart.html';
+                    }
+                });
 
-            medicineGrid.appendChild(showcase);
-        });
-        document.getElementById('medicine-list').style.display = 'block';
-    })
-    .catch(error => console.error('Error fetching medicines:', error));
+                priceBox.appendChild(price);
+                priceBox.appendChild(addToCartButton);
+
+                showcaseContent.appendChild(showcaseCategory);
+                showcaseContent.appendChild(showcaseTitle);
+                showcaseContent.appendChild(priceBox);
+
+                showcase.appendChild(showcaseBanner);
+                showcase.appendChild(showcaseContent);
+
+                medicineGrid.appendChild(showcase);
+            });
+            document.getElementById('medicine-list').style.display = 'block';
+        })
+        .catch(error => console.error('Error fetching medicines:', error));
 });
 
 //Smooth Scroll
